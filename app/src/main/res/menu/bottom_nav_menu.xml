@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/calculatorFragment"
+        android:icon="@drawable/ic_computer"
+        android:title="@string/calculadora" />
+
+    <item
+        android:id="@+id/pricesFragment"
+        android:icon="@drawable/ic_money"
+        android:title="@string/precios" />
+
+</menu>

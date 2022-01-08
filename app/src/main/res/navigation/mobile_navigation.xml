@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/calculatorFragment">
+    <fragment
+        android:id="@+id/calculatorFragment"
+        android:name="com.slavik.parking.ui.pages.calculator.CalculatorFragment"
+        android:label="calculator_fragment"
+        tools:layout="@layout/calculator_fragment" >
+        <action
+            android:id="@+id/action_calculatorFragment_to_pricesFragment"
+            app:destination="@id/pricesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pricesFragment"
+        android:name="com.slavik.parking.ui.pages.prices.PricesFragment"
+        android:label="prices_fragment"
+        tools:layout="@layout/prices_fragment" >
+        <action
+            android:id="@+id/action_pricesFragment_to_calculatorFragment"
+            app:destination="@id/calculatorFragment" />
+    </fragment>
+</navigation>
