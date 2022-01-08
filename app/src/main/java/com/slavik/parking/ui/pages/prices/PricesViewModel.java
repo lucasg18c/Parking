@@ -18,9 +18,9 @@ public class PricesViewModel extends ViewModel {
 
     public void init(Context context) {
         repository = Repository.getInstance(context);
-        auto = new MutableLiveData<>(repository.getTipoVehiculo(0).getPrecioHora());
-        camioneta = new MutableLiveData<>(repository.getTipoVehiculo(1).getPrecioHora());
-        moto = new MutableLiveData<>(repository.getTipoVehiculo(2).getPrecioHora());
+        auto = new MutableLiveData<>(repository.getAuto().getValue().getPrecioHora());
+        camioneta = new MutableLiveData<>(repository.getCamioneta().getValue().getPrecioHora());
+        moto = new MutableLiveData<>(repository.getMoto().getValue().getPrecioHora());
     }
 
     public LiveData<Double> getAuto() {

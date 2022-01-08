@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.slavik.parking.model.TipoVehiculo;
+import com.slavik.parking.util.Constantes;
 
 @Database(entities = {TipoVehiculo.class}, version = 1)
 public abstract class BaseDeDatos extends RoomDatabase {
@@ -43,9 +44,9 @@ public abstract class BaseDeDatos extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            dao.insertTipoVehiculo(new TipoVehiculo(0, "Auto", 120));
-            dao.insertTipoVehiculo(new TipoVehiculo(1, "Camioneta", 160));
-            dao.insertTipoVehiculo(new TipoVehiculo(2, "Moto", 80));
+            dao.insertTipoVehiculo(new TipoVehiculo(Constantes.NOMBRE_AUTO, 120));
+            dao.insertTipoVehiculo(new TipoVehiculo(Constantes.NOMBRE_CAMIONETA, 160));
+            dao.insertTipoVehiculo(new TipoVehiculo(Constantes.NOMBRE_MOTO, 80));
             return null;
         }
     }

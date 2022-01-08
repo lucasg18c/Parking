@@ -12,8 +12,8 @@ import java.util.List;
 @Dao
 public interface TipoVehiculoDAO {
 
-    @Query("SELECT * FROM tipo_vehiculo")
-    List<TipoVehiculo> getAll();
+    @Query("SELECT * FROM tipo_vehiculo WHERE nombre = :nombreTipo")
+    TipoVehiculo get(String nombreTipo);
 
     @Update
     void updateTipoVehiculo(TipoVehiculo tipoVehiculo);

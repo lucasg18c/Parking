@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "tipo_vehiculo")
 public class TipoVehiculo {
 
-    @PrimaryKey()
+    @PrimaryKey(autoGenerate = true)
     private int tvid;
     private String nombre;
 
@@ -17,8 +17,7 @@ public class TipoVehiculo {
     public TipoVehiculo() {
     }
 
-    public TipoVehiculo(int tvid, String nombre, double precioHora) {
-        this.tvid = tvid;
+    public TipoVehiculo(String nombre, double precioHora) {
         this.nombre = nombre;
         this.precioHora = precioHora;
     }
