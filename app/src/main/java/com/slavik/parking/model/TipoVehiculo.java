@@ -4,11 +4,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity(tableName = "tipo_vehiculo")
 public class TipoVehiculo {
 
     @PrimaryKey(autoGenerate = true)
     private int tvid;
+
     private String nombre;
 
     @ColumnInfo(name = "precio_hora")
@@ -44,5 +47,18 @@ public class TipoVehiculo {
 
     public void setTvid(int tvid) {
         this.tvid = tvid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TipoVehiculo that = (TipoVehiculo) o;
+        return tvid == that.tvid && nombre.equals(that.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tvid, nombre);
     }
 }

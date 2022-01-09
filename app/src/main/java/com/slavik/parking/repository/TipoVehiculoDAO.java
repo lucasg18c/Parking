@@ -7,8 +7,6 @@ import androidx.room.Update;
 
 import com.slavik.parking.model.TipoVehiculo;
 
-import java.util.List;
-
 @Dao
 public interface TipoVehiculoDAO {
 

@@ -6,43 +6,71 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.slavik.parking.model.TipoVehiculo;
 import com.slavik.parking.repository.Repository;
-import com.slavik.parking.repository.TipoVehiculoDAO;
+import com.slavik.parking.util.Constantes;
+import com.slavik.parking.util.NumberFormat;
 
 public class PricesViewModel extends ViewModel {
 
     private Repository repository;
 
-    private MutableLiveData<Double> auto, camioneta, moto;
+    private MutableLiveData<String> precioAuto, precioCamioneta, precioMoto, error;
 
-    public void init(Context context) {
-        repository = Repository.getInstance(context);
-        auto = new MutableLiveData<>(repository.getAuto().getValue().getPrecioHora());
-        camioneta = new MutableLiveData<>(repository.getCamioneta().getValue().getPrecioHora());
-        moto = new MutableLiveData<>(repository.getMoto().getValue().getPrecioHora());
+    public void init() {
+        repository = Repository.getInstance();
+
+        error = new MutableLiveData<>("");
+
+        precioAuto = new MutableLiveData<>(
+                NumberFormat.sinDecimal(
+                        repository.getVehiculo(Constantes.NOMBRE_AUTO).getPrecioHora())
+        );
+        precioCamioneta = new MutableLiveData<>(
+                NumberFormat.sinDecimal(
+                        repository.getVehiculo(Constantes.NOMBRE_CAMIONETA).getPrecioHora())
+        );
+        precioMoto = new MutableLiveData<>(
+                NumberFormat.sinDecimal(
+                        repository.getVehiculo(Constantes.NOMBRE_MOTO).getPrecioHora())
+        );
     }
 
-    public LiveData<Double> getAuto() {
-        return auto;
+    public LiveData<String> getAuto() {
+        return precioAuto;
     }
 
-    public LiveData<Double> getCamioneta() {
-        return camioneta;
+    public LiveData<String> getCamioneta() {
+        return precioCamioneta;
     }
 
-    public LiveData<Double> getMoto() {
-        return moto;
+    public LiveData<String> getMoto() {
+        return precioMoto;
     }
 
-    public void setAuto(CharSequence nuevoTexto) {
+    public LiveData<String> getError() {
+        return error;
     }
 
-    public void setCamioneta(CharSequence nuevoTexto) {
-
+    public void setPrecioAuto(String precioAuto) {
+        this.precioAuto.postValue(precioAuto);
     }
 
-    public void setMoto(CharSequence nuevoTexto) {
+    public void setPrecioCamioneta(String precioCamioneta) {
+        this.precioCamioneta.postValue(precioCamioneta);
+    }
 
+    public void setPrecioMoto(String precioMoto) {
+        this.precioMoto.postValue(precioMoto);
+    }
+
+    public void updatePrecios() {
+        try {
+            repository.updatePrecioVehiculo(Constantes.NOMBRE_AUTO, precioAuto.getValue());
+            repository.updatePrecioVehiculo(Constantes.NOMBRE_CAMIONETA, precioCamioneta.getValue());
+            repository.updatePrecioVehiculo(Constantes.NOMBRE_MOTO, precioMoto.getValue());
+        }
+        catch (RuntimeException ex) {
+            error.postValue(ex.getMessage());
+        }
     }
 }

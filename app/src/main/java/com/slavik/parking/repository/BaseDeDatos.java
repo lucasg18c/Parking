@@ -21,7 +21,7 @@ public abstract class BaseDeDatos extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context, BaseDeDatos.class, "parking_db")
                     .allowMainThreadQueries()
-                    .addCallback(callback)
+                    //.addCallback(callback)
                     .build();
         }
         return instance;

@@ -7,17 +7,20 @@
     tools:context=".ui.pages.prices.PricesFragment">
 
     <LinearLayout
+        android:id="@+id/prices_fondo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Auto"
+            android:text="@string/auto"
             android:textSize="20sp"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="25dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,20 +30,23 @@
                 android:id="@+id/txtAuto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
-                android:textSize="40sp"
+                android:text="@string/cargando"
+                android:minWidth="8dp"
+                android:textSize="50sp"
                 android:inputType="number"
                 android:background="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$"
-                android:textSize="22sp"
+                android:text="@string/signo_dinero"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toStartOf="@id/txtAuto"
                 app:layout_constraintTop_toTopOf="@id/txtAuto"
                 app:layout_constraintBottom_toBottomOf="@id/txtAuto"/>
@@ -48,18 +54,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/hora"
+                android:layout_marginStart="8dp"
+                android:text="@string/por_hora"
                 android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@id/txtAuto"
                 app:layout_constraintStart_toEndOf="@id/txtAuto"
-                app:layout_constraintTop_toTopOf="@id/txtAuto"
-                app:layout_constraintBottom_toBottomOf="@id/txtAuto"/>
+                app:layout_constraintTop_toTopOf="@id/txtAuto" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Camioneta"
+            android:text="@string/camioneta"
             android:textSize="20sp"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="70dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,20 +76,23 @@
                 android:id="@+id/txtCamioneta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="125"
-                android:textSize="40sp"
+                android:text="@string/cargando"
+                android:minWidth="8dp"
+                android:textSize="50sp"
                 android:inputType="number"
                 android:background="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$"
-                android:textSize="22sp"
+                android:text="@string/signo_dinero"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toStartOf="@id/txtCamioneta"
                 app:layout_constraintTop_toTopOf="@id/txtCamioneta"
                 app:layout_constraintBottom_toBottomOf="@id/txtCamioneta"/>
@@ -90,19 +100,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/hora"
+                android:layout_marginStart="8dp"
+                android:text="@string/por_hora"
                 android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@id/txtCamioneta"
                 app:layout_constraintStart_toEndOf="@id/txtCamioneta"
-                app:layout_constraintTop_toTopOf="@id/txtCamioneta"
-                app:layout_constraintBottom_toBottomOf="@id/txtCamioneta"/>
+                app:layout_constraintTop_toTopOf="@id/txtCamioneta" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Moto / bici"
+            android:text="@string/moto_bici"
             android:textSize="20sp"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="70dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -112,20 +123,25 @@
                 android:id="@+id/txtMoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="75"
-                android:textSize="40sp"
-                android:inputType="number"
+                android:layout_marginBottom="100dp"
+                android:paddingBottom="30dp"
                 android:background="@android:color/transparent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:minWidth="8dp"
+                android:text="@string/cargando"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$"
-                android:textSize="22sp"
+                android:text="@string/signo_dinero"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toStartOf="@id/txtMoto"
                 app:layout_constraintTop_toTopOf="@id/txtMoto"
                 app:layout_constraintBottom_toBottomOf="@id/txtMoto"/>
@@ -133,12 +149,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/hora"
+                android:layout_marginStart="8dp"
+                android:text="@string/por_hora"
                 android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@id/txtMoto"
                 app:layout_constraintStart_toEndOf="@id/txtMoto"
-                app:layout_constraintTop_toTopOf="@id/txtMoto"
-                app:layout_constraintBottom_toBottomOf="@id/txtMoto"/>
+                app:layout_constraintTop_toTopOf="@id/txtMoto" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </LinearLayout>
 </ScrollView>

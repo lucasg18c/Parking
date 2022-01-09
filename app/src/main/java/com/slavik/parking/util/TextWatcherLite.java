@@ -11,10 +11,10 @@ public abstract class TextWatcherLite implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        onTextChanged(charSequence);
+        onTextChanged(charSequence.toString());
     }
 
-    protected abstract void onTextChanged(CharSequence nuevoTexto);
+    protected abstract void onTextChanged(String nuevoTexto);
 
     @Override
     public void afterTextChanged(Editable editable) {

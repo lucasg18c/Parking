@@ -34,7 +34,7 @@ public class CalculatorFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         vm = new ViewModelProvider(requireActivity()).get(CalculatorViewModel.class);
-        vm.init(getContext());
+        vm.init();
 
         vm.getCobro().observe(requireActivity(),
                 cobro -> binding.lblCobro.setText(cobro));
@@ -63,7 +63,7 @@ public class CalculatorFragment extends Fragment {
             new TimePickerDialog(getContext(), (timePicker, hora, minuto) -> vm.setIngreso(hora, minuto),
                     fechaActual.get(Calendar.HOUR_OF_DAY),
                     fechaActual.get(Calendar.MINUTE),
-                    false
+                    false //todo Agregar opción para cambiarlo
             ).show();
         });
     }

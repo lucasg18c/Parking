@@ -1,21 +1,19 @@
 package com.slavik.parking.ui.pages.prices;
 
-import androidx.lifecycle.ViewModelProvider;
-
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.slavik.parking.R;
-import com.slavik.parking.databinding.CalculatorFragmentBinding;
 import com.slavik.parking.databinding.PricesFragmentBinding;
-import com.slavik.parking.ui.pages.calculator.CalculatorViewModel;
 import com.slavik.parking.util.TextWatcherLite;
 
 public class PricesFragment extends Fragment {
@@ -36,31 +34,53 @@ public class PricesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         vm = new ViewModelProvider(this).get(PricesViewModel.class);
-        vm.init(requireActivity());
+        vm.init();
 
-        vm.getAuto().observe(requireActivity(), precio -> binding.txtAuto.setText(String.valueOf(precio)));
-        vm.getCamioneta().observe(requireActivity(), precio -> binding.txtCamioneta.setText(String.valueOf(precio)));
-        vm.getMoto().observe(requireActivity(), precio -> binding.txtMoto.setText(String.valueOf(precio)));
+        binding.txtAuto.setText(vm.getAuto().getValue());
+        binding.txtCamioneta.setText(vm.getCamioneta().getValue());
+        binding.txtMoto.setText(vm.getMoto().getValue());
+
+        vm.getError().observe(requireActivity(), error -> {
+            if (error.length() > 0) {
+                Toast.makeText(
+                        requireActivity(),
+                        error,
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
 
         binding.txtAuto.addTextChangedListener(new TextWatcherLite() {
             @Override
-            protected void onTextChanged(CharSequence nuevoTexto) {
-                vm.setAuto(nuevoTexto);
+            protected void onTextChanged(String nuevoTexto) {
+                vm.setPrecioAuto(nuevoTexto);
             }
         });
 
         binding.txtCamioneta.addTextChangedListener(new TextWatcherLite() {
             @Override
-            protected void onTextChanged(CharSequence nuevoTexto) {
-                vm.setCamioneta(nuevoTexto);
+            protected void onTextChanged(String nuevoTexto) {
+                vm.setPrecioCamioneta(nuevoTexto);
             }
         });
 
         binding.txtMoto.addTextChangedListener(new TextWatcherLite() {
             @Override
-            protected void onTextChanged(CharSequence nuevoTexto) {
-                vm.setMoto(nuevoTexto);
+            protected void onTextChanged(String nuevoTexto) {
+                vm.setPrecioMoto(nuevoTexto);
             }
         });
+
+        binding.pricesFondo.setOnClickListener(v ->{
+            InputMethodManager inputMethodManager = (InputMethodManager) requireActivity()
+                    .getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        vm.updatePrecios();
     }
 }

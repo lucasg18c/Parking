@@ -2,19 +2,15 @@ package com.slavik.parking.repository;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.slavik.parking.model.TipoVehiculo;
 import com.slavik.parking.util.Constantes;
-
-import java.util.List;
-import java.util.Objects;
+import com.slavik.parking.util.NumberFormat;
 
 public class Repository {
 
     private BaseDeDatos db;
-    private MutableLiveData<TipoVehiculo> auto, camioneta, moto;
+    private TipoVehiculo auto, camioneta, moto;
+    private boolean iniciado = false;
 
     private Repository() {
 
@@ -22,41 +18,61 @@ public class Repository {
 
     private static Repository instance;
 
-    public static Repository getInstance(Context context) {
+    public static Repository getInstance() {
         if (instance == null) {
             instance = new Repository();
-            instance.db = BaseDeDatos.getInstance(context);
-            instance.populate();
         }
         return instance;
     }
 
-    private void populate() {
-        auto = new MutableLiveData<>(db.tipoVehiculoDAO().get(Constantes.NOMBRE_AUTO));
-        camioneta = new MutableLiveData<>(db.tipoVehiculoDAO().get(Constantes.NOMBRE_CAMIONETA));
-        moto = new MutableLiveData<>(db.tipoVehiculoDAO().get(Constantes.NOMBRE_MOTO));
-    }
+    public TipoVehiculo getVehiculo(String nombreTipo) {
+        if (auto.getNombre().equals(nombreTipo))
+            return auto;
 
-    public LiveData<TipoVehiculo> getAuto() {
-        return auto;
-    }
+        else if (camioneta.getNombre().equals(nombreTipo))
+            return camioneta;
 
-    public LiveData<TipoVehiculo> getCamioneta() {
-        return camioneta;
-    }
-
-    public LiveData<TipoVehiculo> getMoto() {
-        return moto;
-    }
-
-    public TipoVehiculo getVehiculo(String tipoActual) {
-        if (Objects.requireNonNull(auto.getValue()).getNombre().equals(tipoActual))
-            return auto.getValue();
-        else if (Objects.requireNonNull(camioneta.getValue()).getNombre().equals(tipoActual))
-            return camioneta.getValue();
-        else if (Objects.requireNonNull(moto.getValue()).getNombre().equals(tipoActual))
-            return moto.getValue();
+        else if (moto.getNombre().equals(nombreTipo))
+            return moto;
 
         return null;
+    }
+
+    public void updatePrecioVehiculo(String nombreTipo, String nuevoPrecio) {
+        TipoVehiculo modificado = getVehiculo(nombreTipo);
+
+        if (!NumberFormat.esDouble(nuevoPrecio)) throw new RuntimeException(
+                "No se pudo actualizar el precio de " + nombreTipo + ".");
+
+        double precio = Double.parseDouble(nuevoPrecio);
+
+        if (modificado.getPrecioHora() == precio) return;
+
+        modificado.setPrecioHora(precio);
+        db.tipoVehiculoDAO().updateTipoVehiculo(modificado);
+    }
+
+    public void init(Context context) {
+        if (iniciado) return;
+        iniciado = true;
+
+        db = BaseDeDatos.getInstance(context);
+        TipoVehiculoDAO dao = db.tipoVehiculoDAO();
+
+        if (dao.get(Constantes.NOMBRE_AUTO) == null) {
+
+            auto = new TipoVehiculo(Constantes.NOMBRE_AUTO, 120);
+            camioneta = new TipoVehiculo(Constantes.NOMBRE_CAMIONETA, 160);
+            moto = new TipoVehiculo(Constantes.NOMBRE_MOTO, 80);
+
+            dao.insertTipoVehiculo(auto);
+            dao.insertTipoVehiculo(camioneta);
+            dao.insertTipoVehiculo(moto);
+        }
+        else {
+            auto = db.tipoVehiculoDAO().get(Constantes.NOMBRE_AUTO);
+            camioneta = db.tipoVehiculoDAO().get(Constantes.NOMBRE_CAMIONETA);
+            moto = db.tipoVehiculoDAO().get(Constantes.NOMBRE_MOTO);
+        }
     }
 }

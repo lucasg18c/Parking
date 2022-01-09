@@ -1,22 +1,18 @@
 package com.slavik.parking.ui.pages.calculator;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.slavik.parking.model.TipoVehiculo;
 import com.slavik.parking.repository.Repository;
 import com.slavik.parking.util.CalculadorCobro;
 import com.slavik.parking.util.Constantes;
 import com.slavik.parking.util.Fechas;
+import com.slavik.parking.util.NumberFormat;
 import com.slavik.parking.util.VehiculoIDParser;
 
-import java.time.Duration;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -73,7 +69,7 @@ public class CalculatorViewModel extends ViewModel {
 
         long estadia = Fechas.calcularMinutosDuracion(calendarIngreso, calendarSalida);
         montoACobrar.postValue(
-                String.valueOf(
+                NumberFormat.sinDecimal(
                         CalculadorCobro.calcularCobro(repository.getVehiculo(tipoActual), estadia))
         );
 
@@ -88,13 +84,14 @@ public class CalculatorViewModel extends ViewModel {
         calcularCosto();
     }
 
-
-
-    public void init(Context context) {
-        if (iniciado) return;
+    public void init() {
+        if (iniciado) {
+            calcularCosto();
+            return;
+        }
         iniciado = true;
 
-        repository = Repository.getInstance(context);
+        repository = Repository.getInstance();
         tipoActual = Constantes.NOMBRE_AUTO;
         tipoId = new MutableLiveData<>(VehiculoIDParser.getRadioButtonId(tipoActual));
 
@@ -112,6 +109,5 @@ public class CalculatorViewModel extends ViewModel {
         salidaAhora = new MutableLiveData<>(true);
 
         calcularCosto();
-
     }
 }
