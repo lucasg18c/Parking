@@ -15,7 +15,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -52,7 +51,7 @@
                 android:id="@+id/rbAuto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Auto" />
+                android:text="Auto"/>
 
             <RadioButton
                 android:id="@+id/rbCamioneta"
@@ -67,59 +66,67 @@
                 android:text="Moto/Bici" />
         </RadioGroup>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Ingreso"
-            android:textSize="22sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:text="Ingreso"-->
+<!--            android:textSize="22sp" />-->
 
-        <TextView
-            android:id="@+id/lblIngreso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="13:22 hs"
-            android:textSize="40sp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"/>
+<!--        <TextView-->
+<!--            android:id="@+id/lblIngreso"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="13:22 hs"-->
+<!--            android:textSize="40sp"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:foreground="?attr/selectableItemBackground"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Salida"
-            android:textSize="22sp" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TimePicker
+            android:id="@+id/tpIngreso"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:timePickerMode="clock"/>
 
-            <TextView
-                android:id="@+id/lblSalida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ahora"
-                android:textSize="40sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:text="Salida"-->
+<!--            android:textSize="22sp" />-->
 
-            <ImageView
-                android:id="@+id/btnActualizarHora"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_refresh"
-                android:layout_marginStart="30dp"
-                android:visibility="gone"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:layout_constraintStart_toEndOf="@id/lblSalida"
-                app:layout_constraintTop_toTopOf="@id/lblSalida"
-                app:layout_constraintBottom_toBottomOf="@id/lblSalida"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="60dp">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/lblSalida"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ahora"-->
+<!--                android:textSize="40sp"-->
+<!--                android:paddingBottom="30dp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/btnActualizarHora"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/ic_refresh"-->
+<!--                android:layout_marginStart="30dp"-->
+<!--                android:visibility="gone"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:foreground="?attr/selectableItemBackground"-->
+<!--                app:layout_constraintStart_toEndOf="@id/lblSalida"-->
+<!--                app:layout_constraintTop_toTopOf="@id/lblSalida"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/lblSalida"/>-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
     </LinearLayout>
 </ScrollView>

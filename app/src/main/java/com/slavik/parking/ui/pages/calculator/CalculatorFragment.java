@@ -1,15 +1,19 @@
 package com.slavik.parking.ui.pages.calculator;
 
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 
 import com.slavik.parking.databinding.CalculatorFragmentBinding;
 
@@ -29,6 +33,7 @@ public class CalculatorFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -42,29 +47,36 @@ public class CalculatorFragment extends Fragment {
         vm.getTiempoEstadia().observe(requireActivity(),
                 tiempo -> binding.lblTiempoEstadia.setText(tiempo));
 
-        vm.getHoraIngreso().observe(requireActivity(),
-                hora -> binding.lblIngreso.setText(hora));
+//        vm.getHoraIngreso().observe(requireActivity(), hora -> {
+//            binding.lblIngreso.setText(hora);
+//        });
 
-        vm.getHoraSalida().observe(requireActivity(),
-                hora -> binding.lblSalida.setText(hora));
-
-        vm.getSalidaAhora().observe(requireActivity(),
-                saleAhora -> binding.btnActualizarHora.setVisibility(saleAhora
-                        ? View.GONE :
-                        View.VISIBLE));
+//        vm.getHoraSalida().observe(requireActivity(),
+//                hora -> binding.lblSalida.setText(hora));
+//
+//        vm.getSalidaAhora().observe(requireActivity(),
+//                saleAhora -> binding.btnActualizarHora.setVisibility(saleAhora
+//                        ? View.GONE :
+//                        View.VISIBLE));
 
         vm.getTipoId().observe(requireActivity(), tipoID -> binding.rgTipo.check(tipoID));
 
+        binding.tpIngreso.setOnTimeChangedListener((timePicker, hora, minuto)
+                -> vm.setIngreso(hora, minuto));
+
+        binding.tpIngreso.setHour(vm.getCalendarIngreso().get(Calendar.HOUR_OF_DAY));
+        binding.tpIngreso.setMinute(vm.getCalendarIngreso().get(Calendar.MINUTE));
+
         binding.rgTipo.setOnCheckedChangeListener((radioGroup, i) -> vm.setTipo(i));
-
-        binding.lblIngreso.setOnClickListener(v -> {
-            Calendar fechaActual = Calendar.getInstance();
-
-            new TimePickerDialog(getContext(), (timePicker, hora, minuto) -> vm.setIngreso(hora, minuto),
-                    fechaActual.get(Calendar.HOUR_OF_DAY),
-                    fechaActual.get(Calendar.MINUTE),
-                    false //todo Agregar opción para cambiarlo
-            ).show();
-        });
+//
+//        binding.lblIngreso.setOnClickListener(v -> {
+//            Calendar fechaActual = Calendar.getInstance();
+//
+//            new TimePickerDialog(getContext(), (timePicker, hora, minuto) -> vm.setIngreso(hora, minuto),
+//                    fechaActual.get(Calendar.HOUR_OF_DAY),
+//                    fechaActual.get(Calendar.MINUTE),
+//                    false
+//            ).show();
+//        });
     }
 }

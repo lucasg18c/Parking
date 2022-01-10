@@ -1,6 +1,7 @@
 package com.slavik.parking.ui.pages.calculator;
 
 import android.content.Context;
+import android.os.Handler;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -55,6 +56,7 @@ public class CalculatorViewModel extends ViewModel {
     public void setIngreso(int hora, int minuto) {
         calendarIngreso.set(Calendar.HOUR_OF_DAY, hora);
         calendarIngreso.set(Calendar.MINUTE, minuto);
+        calendarIngreso.set(Calendar.SECOND, 0);
 
         horaIngreso.postValue(Fechas.formatearHora(hora, minuto));
 
@@ -64,17 +66,23 @@ public class CalculatorViewModel extends ViewModel {
     private void calcularCosto() {
         if (Objects.requireNonNull(salidaAhora.getValue())) {
             calendarSalida = Calendar.getInstance();
+            calendarSalida.set(Calendar.SECOND, 0);
             horaSalida.postValue("Ahora");
         }
 
         long estadia = Fechas.calcularMinutosDuracion(calendarIngreso, calendarSalida);
         montoACobrar.postValue(
-                NumberFormat.sinDecimal(
+
+                estadia < 0
+                        ? "-"
+                        : NumberFormat.sinDecimal(
                         CalculadorCobro.calcularCobro(repository.getVehiculo(tipoActual), estadia))
         );
 
         tiempoEstadia.postValue(
-                Fechas.descripcionDuracion(calendarIngreso, calendarSalida)
+                estadia < 0
+                        ? "Todavía no son las " + Fechas.formatearHora(calendarIngreso) + "."
+                        : Fechas.descripcionDuracion(calendarIngreso, calendarSalida)
         );
     }
 
@@ -91,14 +99,18 @@ public class CalculatorViewModel extends ViewModel {
         }
         iniciado = true;
 
+        iniciarAutoUpdateHora();
+
         repository = Repository.getInstance();
         tipoActual = Constantes.NOMBRE_AUTO;
         tipoId = new MutableLiveData<>(VehiculoIDParser.getRadioButtonId(tipoActual));
 
         calendarIngreso = Calendar.getInstance();
-        calendarIngreso.set(Calendar.HOUR_OF_DAY, 12);
+        calendarIngreso.add(Calendar.HOUR_OF_DAY, -1);
         calendarIngreso.set(Calendar.MINUTE, 0);
+        calendarIngreso.set(Calendar.SECOND, 0);
         calendarSalida = Calendar.getInstance();
+        calendarSalida.set(Calendar.SECOND, 0);
 
         horaIngreso = new MutableLiveData<>(Fechas.formatearHora(calendarIngreso));
 
@@ -109,5 +121,16 @@ public class CalculatorViewModel extends ViewModel {
         salidaAhora = new MutableLiveData<>(true);
 
         calcularCosto();
+    }
+
+    private void iniciarAutoUpdateHora() {
+        new Handler().postDelayed(() -> {
+            calcularCosto();
+            iniciarAutoUpdateHora();
+        },2000);
+    }
+
+    public Calendar getCalendarIngreso() {
+        return calendarIngreso;
     }
 }

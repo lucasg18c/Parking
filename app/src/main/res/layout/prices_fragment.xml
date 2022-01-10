@@ -138,13 +138,14 @@
                 tools:ignore="LabelFor" />
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/signo_dinero"
                 android:textSize="26sp"
                 app:layout_constraintEnd_toStartOf="@id/txtMoto"
-                app:layout_constraintTop_toTopOf="@id/txtMoto"
-                app:layout_constraintBottom_toBottomOf="@id/txtMoto"/>
+                app:layout_constraintTop_toTopOf="@id/txtMoto" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -152,9 +153,8 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/por_hora"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@id/txtMoto"
                 app:layout_constraintStart_toEndOf="@id/txtMoto"
-                app:layout_constraintTop_toTopOf="@id/txtMoto" />
+                app:layout_constraintTop_toTopOf="@+id/textView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>
