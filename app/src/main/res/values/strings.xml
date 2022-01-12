@@ -5,7 +5,8 @@
     <string name="cargando">cargando</string>
     <string name="signo_dinero">$</string>
     <string name="por_hora">/hora</string>
-    <string name="camioneta">Camioneta</string>
+    <string name="camioneta">4x4</string>
     <string name="moto_bici">Moto / bici</string>
     <string name="auto">Auto</string>
+    <string name="ingreso">Ingreso</string>
 </resources>

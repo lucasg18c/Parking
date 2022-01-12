@@ -1,19 +1,20 @@
 package com.slavik.parking.ui.pages.prices;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.slavik.parking.databinding.PricesFragmentBinding;
+import com.slavik.parking.util.Teclado;
 import com.slavik.parking.util.TextWatcherLite;
 
 public class PricesFragment extends Fragment {
@@ -36,16 +37,18 @@ public class PricesFragment extends Fragment {
         vm = new ViewModelProvider(this).get(PricesViewModel.class);
         vm.init();
 
+        LifecycleOwner activity = requireActivity();
+
         binding.txtAuto.setText(vm.getAuto().getValue());
         binding.txtCamioneta.setText(vm.getCamioneta().getValue());
         binding.txtMoto.setText(vm.getMoto().getValue());
 
-        vm.getError().observe(requireActivity(), error -> {
+        vm.getError().observe(activity, error -> {
             if (error.length() > 0) {
                 Toast.makeText(
-                        requireActivity(),
+                        (Context) activity,
                         error,
-                        Toast.LENGTH_LONG)
+                        Toast.LENGTH_SHORT)
                         .show();
             }
         });
@@ -71,11 +74,7 @@ public class PricesFragment extends Fragment {
             }
         });
 
-        binding.pricesFondo.setOnClickListener(v ->{
-            InputMethodManager inputMethodManager = (InputMethodManager) requireActivity()
-                    .getSystemService(Activity.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        });
+        binding.pricesFondo.setOnClickListener(v -> Teclado.cerrar(view));
     }
 
     @Override

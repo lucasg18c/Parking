@@ -33,7 +33,7 @@ public class TimeEditText extends androidx.appcompat.widget.AppCompatTextView {
 
     private static final int POSITION_NONE = -1;
 
-    private int[] digits = new int[4];
+    private final int[] digits = new int[4];
     private int currentPosition = POSITION_NONE;
     private int mImeOptions;
 

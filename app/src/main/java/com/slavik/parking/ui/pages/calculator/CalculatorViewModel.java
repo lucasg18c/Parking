@@ -1,6 +1,5 @@
 package com.slavik.parking.ui.pages.calculator;
 
-import android.content.Context;
 import android.os.Handler;
 
 import androidx.lifecycle.LiveData;
@@ -15,19 +14,15 @@ import com.slavik.parking.util.NumberFormat;
 import com.slavik.parking.util.VehiculoIDParser;
 
 import java.util.Calendar;
-import java.util.Objects;
 
 public class CalculatorViewModel extends ViewModel {
     private Calendar calendarIngreso, calendarSalida;
-    private MutableLiveData<String> montoACobrar, tiempoEstadia, horaIngreso, horaSalida;
-    private MutableLiveData<Boolean> salidaAhora;
+    private MutableLiveData<String> montoACobrar, tiempoEstadia, horaIngreso;
     private MutableLiveData<Integer> tipoId;
-
     private String tipoActual;
 
-    private Repository repository;
-
     private boolean iniciado = false;
+    private Repository repository;
 
     public LiveData<String> getCobro() {
         return montoACobrar;
@@ -37,70 +32,78 @@ public class CalculatorViewModel extends ViewModel {
         return tiempoEstadia;
     }
 
-    public LiveData<String> getHoraIngreso() {
-        return horaIngreso;
-    }
-
-    public LiveData<String> getHoraSalida() {
-        return horaSalida;
-    }
-
-    public LiveData<Boolean> getSalidaAhora() {
-        return salidaAhora;
-    }
-
-    public MutableLiveData<Integer> getTipoId() {
+    public LiveData<Integer> getTipoId() {
         return tipoId;
     }
 
+    /**
+     * Permite setear la hora de ingreso de un vehículo.
+     *
+     * @param hora   Hora de ingreso
+     * @param minuto Minuto de ingreso
+     */
     public void setIngreso(int hora, int minuto) {
         calendarIngreso.set(Calendar.HOUR_OF_DAY, hora);
         calendarIngreso.set(Calendar.MINUTE, minuto);
         calendarIngreso.set(Calendar.SECOND, 0);
-
         horaIngreso.postValue(Fechas.formatearHora(hora, minuto));
 
-        calcularCosto();
+        updateResultado();
     }
 
-    private void calcularCosto() {
-        if (Objects.requireNonNull(salidaAhora.getValue())) {
-            calendarSalida = Calendar.getInstance();
-            calendarSalida.set(Calendar.SECOND, 0);
-            horaSalida.postValue("Ahora");
-        }
+    /**
+     * Mantiene actualizados el tiempo y costo de estadía.
+     */
+    private void updateResultado() {
+        calendarSalida = Calendar.getInstance();
+        calendarSalida.set(Calendar.SECOND, 0);
 
         long estadia = Fechas.calcularMinutosDuracion(calendarIngreso, calendarSalida);
-        montoACobrar.postValue(
 
-                estadia < 1
-                        ? "-"
-                        : NumberFormat.sinDecimal(
-                        CalculadorCobro.calcularCobro(repository.getVehiculo(tipoActual), estadia))
-        );
+        if (estadia < 1) {
+            montoACobrar.postValue("-");
 
-        tiempoEstadia.postValue(
-                estadia < 1
-                        ? "Todavía no son las " + Fechas.formatearHora(calendarIngreso) + "."
-                        : Fechas.descripcionDuracion(calendarIngreso, calendarSalida)
-        );
+            if (estadia < 0) {
+                tiempoEstadia.postValue(
+                        "Todavía no son las " + Fechas.formatearHora(calendarIngreso) + ".");
+            } else {
+                tiempoEstadia.postValue("Son las " + Fechas.formatearHora(calendarIngreso) + ".");
+            }
+        } else {
+            montoACobrar.postValue(
+                    NumberFormat.sinDecimal(
+                            CalculadorCobro.calcularCobro(
+                                    repository.getVehiculo(tipoActual),
+                                    estadia)));
+
+            tiempoEstadia.postValue(Fechas.descripcionDuracion(estadia));
+        }
     }
 
+    /**
+     * Permite actualizar el tipo de vehículo que se va a retirar.
+     *
+     * @param tvid IDentificador de Tipo de Vehículo que se retira
+     */
     public void setTipo(int tvid) {
         tipoActual = VehiculoIDParser.getNombreVehiculo(tvid);
         tipoId.postValue(tvid);
-        calcularCosto();
+        updateResultado();
     }
 
+    /**
+     * Ejecutar luego de instanciarlo.
+     * Inicializa variables y las mantiene si el fragment es destruido.
+     */
     public void init() {
+        // Control de inicio previo
         if (iniciado) {
-            calcularCosto();
+            updateResultado();
             return;
         }
         iniciado = true;
 
-        iniciarAutoUpdateHora();
-
+        // Inicia variables y valores
         repository = Repository.getInstance();
         tipoActual = Constantes.NOMBRE_AUTO;
         tipoId = new MutableLiveData<>(VehiculoIDParser.getRadioButtonId(tipoActual));
@@ -113,23 +116,28 @@ public class CalculatorViewModel extends ViewModel {
         calendarSalida.set(Calendar.SECOND, 0);
 
         horaIngreso = new MutableLiveData<>(Fechas.formatearHora(calendarIngreso));
-
         montoACobrar = new MutableLiveData<>();
         tiempoEstadia = new MutableLiveData<>();
 
-        horaSalida = new MutableLiveData<>();
-        salidaAhora = new MutableLiveData<>(true);
-
-        calcularCosto();
+        // Inicia el refresco automático de la hora actual
+        iniciarAutoUpdateHora();
     }
 
+    /**
+     * Mantiene actualizado el costo y la estadía en tiempo real.
+     */
     private void iniciarAutoUpdateHora() {
         new Handler().postDelayed(() -> {
-            calcularCosto();
+            updateResultado();
             iniciarAutoUpdateHora();
-        },2000);
+        }, Constantes.TIEMPO_UPDATE_COSTO);
     }
 
+    /**
+     * Getter para la hora de ingreso.
+     *
+     * @return Calendar con la hora de ingreso.
+     */
     public Calendar getCalendarIngreso() {
         return calendarIngreso;
     }

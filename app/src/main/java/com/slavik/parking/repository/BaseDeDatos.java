@@ -1,17 +1,16 @@
 package com.slavik.parking.repository;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.slavik.parking.model.TipoVehiculo;
-import com.slavik.parking.util.Constantes;
 
+/**
+ * Clase que permite el acceso a la base de datos.
+ */
 @Database(entities = {TipoVehiculo.class}, version = 1)
 public abstract class BaseDeDatos extends RoomDatabase {
 
@@ -21,34 +20,9 @@ public abstract class BaseDeDatos extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context, BaseDeDatos.class, "parking_db")
                     .allowMainThreadQueries()
-                    //.addCallback(callback)
                     .build();
         }
         return instance;
-    }
-
-    private static final RoomDatabase.Callback callback = new Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new InsertarTiposBase(instance).execute();
-        }
-    };
-
-    private static class InsertarTiposBase extends AsyncTask<Void, Void, Void> {
-        TipoVehiculoDAO dao;
-
-        public InsertarTiposBase(BaseDeDatos db) {
-            dao = db.tipoVehiculoDAO();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            dao.insertTipoVehiculo(new TipoVehiculo(Constantes.NOMBRE_AUTO, 120));
-            dao.insertTipoVehiculo(new TipoVehiculo(Constantes.NOMBRE_CAMIONETA, 160));
-            dao.insertTipoVehiculo(new TipoVehiculo(Constantes.NOMBRE_MOTO, 80));
-            return null;
-        }
     }
 
     public abstract TipoVehiculoDAO tipoVehiculoDAO();

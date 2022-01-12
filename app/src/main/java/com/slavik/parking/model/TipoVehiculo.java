@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
+/**
+ * Representa un tipo de vehículo que puede estacionarse.
+ */
 @Entity(tableName = "tipo_vehiculo")
 public class TipoVehiculo {
 
