@@ -73,14 +73,14 @@ public class CalculatorViewModel extends ViewModel {
         long estadia = Fechas.calcularMinutosDuracion(calendarIngreso, calendarSalida);
         montoACobrar.postValue(
 
-                estadia < 0
+                estadia < 1
                         ? "-"
                         : NumberFormat.sinDecimal(
                         CalculadorCobro.calcularCobro(repository.getVehiculo(tipoActual), estadia))
         );
 
         tiempoEstadia.postValue(
-                estadia < 0
+                estadia < 1
                         ? "Todavía no son las " + Fechas.formatearHora(calendarIngreso) + "."
                         : Fechas.descripcionDuracion(calendarIngreso, calendarSalida)
         );
